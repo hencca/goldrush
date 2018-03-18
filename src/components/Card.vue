@@ -7,6 +7,7 @@
 
 <script>
 import State from "../sate";
+import Consts from "../consts";
 export default {
 
    data:function() {
@@ -27,12 +28,16 @@ methods: {
            this.$refs.ww.style.height = this.$refs.ww.offsetWidth + "px"
     },
    hClick() {
+       if(State.gameState !== Consts.GAMESTATE_PLAYING) return;
+       console.log(State.gameState )
+        State.EE.emit("reveal", this)
        this.open = true
+       /*
        if(this.gold) {
-
+           State.EE.emit("foundgold")
        } else {
            State.EE.emit("gameOver")
-       }
+       }*/
    },
     getStyle() {
             //console.log(this.$refs)
