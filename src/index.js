@@ -12,7 +12,7 @@ document.addEventListener("touchmove", function(e) {
 })
 
  document.write("<app></app>");
- document.write(`<link rel="stylesheet" href="/assets/styles/styles.css">`);
+ document.write(`<link rel="stylesheet" href="assets/styles/styles.css">`);
 
 document.body.style.backgroundColor = "black"
 Vue.use(Vuex)
