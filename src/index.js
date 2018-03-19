@@ -3,8 +3,16 @@ import Main from "./components/Main.vue";
 import State from "./sate";
 import Consts from "./consts"
 import Vuex from "vuex"
-const ui = `<div v-if="vuex.state.gameState==Consts.GAMESTATE_OVER"><button @click="startNewGame()">Start new Game</button></div>`
+const ui = `<div v-if="vuex.state.gameState==Consts.GAMESTATE_OVER">
+<button class="startnew" @click="startNewGame()">Start new Game</button>
+</div>`
+
+document.addEventListener("touchmove", function(e) {
+    e.preventDefault();
+})
+
  document.write("<app></app>");
+ document.write(`<link rel="stylesheet" href="/assets/styles/styles.css">`);
 
 document.body.style.backgroundColor = "black"
 Vue.use(Vuex)

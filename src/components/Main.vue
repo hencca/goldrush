@@ -28,7 +28,11 @@ export default {
 
         )
        }   
-       return <div class="container">{ret}</div>;
+       return <div class="container"> 
+       <h2 class="score">Level: {this.level}</h2>
+       {ret}
+    
+       </div>;
     },
    components: {
        "card" :Card,
@@ -148,5 +152,7 @@ export default {
 .row {
     display: flex;
 }
+
+
 </style>
 

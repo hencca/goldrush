@@ -5,7 +5,7 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 const vuex = new Vuex.Store({
     state: {
-        level:1,
+        level:0,
         gameState:Consts.GAMESTATE_PLAYING
     },
     mutations: {
