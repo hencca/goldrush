@@ -36,12 +36,18 @@ export default {
 
    data: function() {
    return {
-       level:2,
+       level:State.vuex.state.level,
        found:0,
        userStarted:false,
    }
    
    },
+
+    computed:{
+        llevel() {
+            return State.vuex.state.level;
+        }
+    },
 
     methods: {
 
@@ -63,8 +69,9 @@ export default {
 
         nextLevel() {
             var that = this;
-            this.level++;
-          
+            State.vuex.commit("increment");
+
+            this.level = this.llevel;
             
                // .sort((a,b)=>Math.random()>.5 ? -1 :1)
             this.userStarted = false;
@@ -76,8 +83,11 @@ export default {
              State.EE.emit("revealAll")
              setTimeout(function() {
                 if(!that.userStarted) {
-                    State.EE.emit("hideAll") 
+            
+                     State.EE.emit("hideAll") 
                      document.body.style.backgroundColor = "black"
+                    
+                
                 }
                   
              },2000)
@@ -91,14 +101,11 @@ export default {
 
         State.EE.on(Consts.INIT_NEW_GAME, function() {
             that.userStarted = false;
+             State.vuex.commit("init");
             that.level = 1;
             that.nextLevel();
         })
-
-        State.EE.on("foundgold", function(e) {
-     
-        })
-     
+    
         State.EE.on("reveal", function(card) {
                if(!that.userStarted) {
                    that.userStarted = true;
@@ -116,7 +123,7 @@ export default {
                        },1000)
                     }
                } else {
-                        State.gameState = Consts.GAMESTATE_OVER;
+                        State.vuex.commit("setGameState", Consts.GAMESTATE_OVER);
                 
                         document.body.style.backgroundColor = "red"
                         that.userStarted = false;
@@ -136,7 +143,6 @@ export default {
     margin: auto;
     max-width: 700px;
     background-color:brown;
-    height: 100vh;
 }
 
 .row {

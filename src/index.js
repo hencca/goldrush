@@ -2,21 +2,27 @@ import Vue from "../node_modules/vue/dist/vue.js";
 import Main from "./components/Main.vue";
 import State from "./sate";
 import Consts from "./consts"
-
-const ui = `<button @click="startNewGame()">Start new Game</button>`
+import Vuex from "vuex"
+const ui = `<div v-if="vuex.state.gameState==Consts.GAMESTATE_OVER"><button @click="startNewGame()">Start new Game</button></div>`
  document.write("<app></app>");
 
 document.body.style.backgroundColor = "black"
+Vue.use(Vuex)
+
 const app = new Vue({
     el: "app" ,
+    data:{
+        vuex:State.vuex,
+        Consts
+    },
     methods:{
         startNewGame() {
             State.EE.emit(Consts.INIT_NEW_GAME)
-            State.gameState = Consts.GAMESTATE_PLAYING;
+            State.vuex.commit("setGameState", Consts.GAMESTATE_PLAYING);
             document.body.style.backgroundColor = "black"
         }
     },
-    template:`<div>${ui}<main-component></main-component></div>`,
+    template:`<div><main-component></main-component>${ui}</div>`,
     components:{
         "main-component":Main,
     },

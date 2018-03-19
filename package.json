@@ -19,7 +19,8 @@
     "lodash": "^4.17.5",
     "vue": "^2.5.16",
     "vue-loader": "^14.2.1",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.16",
+    "vuex": "^3.0.1"
   },
   "dependencies": {
     "babel-plugin-transform-vue-jsx": "^3.7.0",
