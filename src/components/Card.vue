@@ -1,5 +1,5 @@
 <template>
-  <div ref="ww" @mousedown="hClick()" v-bind:style="gt" class="wrapper">
+  <div ref="ww" v-bind:style="gt" class="wrapper">
     <div class="lid" v-if="!open"></div>
      <div v-bind:class="'container ' +( gold ? 'gold': 'empty1')" v-if="open">
          <img style="width:100%" v-if="gold" src="assets/img/gold.gif">

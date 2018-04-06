@@ -20,6 +20,6 @@ const EE = new EventEmitter();
 
 export default {
     EE,
-    gameState:0,
+    gameState : 0,
     vuex
 };

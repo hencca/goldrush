@@ -1,6 +1,8 @@
 
 <script>
 import Card from "./Card.vue"
+import Effects from "./Effects.vue"
+
 import State from "../sate";
 import Consts from "../consts";
 import _ from "lodash"
@@ -11,31 +13,46 @@ function getRow(h, i) {
      }
 
    return (
-       <div  class={'row'}>     
+       <div class={'row'}>
             {ret}
         </div>
    )
 }
 
+function showEffects(h) {
+   if( State.vuex.state.gameState === Consts.GAMESTATE_PLAYING) {
+        return(
+            <effects ref='effects' />
+        )
+    }
+}
+
 export default {
     render:function(h) {
        let ret = []
-       for(var i = 0; i< 4; i++) {
+       for(var i = 0; i < 4; i++) {
         ret.push (
-            
-            getRow(h,i)
-       
-
+            getRow( h, i )
         )
-       }   
-       return <div class="container"> 
-       <h2 class="score">Level: {this.level}</h2>
+       }
+
+
+
+       return (
+       <div>
+       {
+           showEffects(h)
+       }
+        <h2 class="score">Level: {this.level}</h2>
+       <div class="container">
+      
        {ret}
-    
-       </div>;
+       </div>
+       </div>);
     },
    components: {
        "card" :Card,
+       "effects" :Effects,
    },
 
    data: function() {
@@ -44,7 +61,7 @@ export default {
        found:0,
        userStarted:false,
    }
-   
+
    },
 
     computed:{
@@ -56,7 +73,7 @@ export default {
     methods: {
 
         hideall() {
-            State.EE.emit("hideAll") 
+            State.EE.emit("hideAll")
         },
 
         addGoldToCards() {
@@ -76,32 +93,56 @@ export default {
             State.vuex.commit("increment");
 
             this.level = this.llevel;
-            
+
                // .sort((a,b)=>Math.random()>.5 ? -1 :1)
             this.userStarted = false;
             this.found = 0;
-    
+
             this.addGoldToCards();
 
             State.EE.emit("startgame")
              State.EE.emit("revealAll")
              setTimeout(function() {
                 if(!that.userStarted) {
-            
-                     State.EE.emit("hideAll") 
-                     document.body.style.backgroundColor = "black"
-                    
-                
-                }
-                  
-             },2000)
 
+                     State.EE.emit("hideAll")
+                     document.body.style.backgroundColor = "black"
+
+
+                }
+
+             },2000)
+        },
+
+        checkIfBlockTouched(e) {
+          
+            let mouseLeft = e.pageX
+            let mouseTop = e.pageY
+            
+                for(var i = 0; i< 20; i ++) {
+                    let card = this.$refs['card' + i];
+                    let top = card.$el.offsetTop;
+                    let left = card.$el.offsetLeft;
+                    let cardWidth = card.$el.offsetWidth;
+                    let cardHeight = card.$el.offsetHeight;
+                   
+                   if(mouseLeft > left && mouseLeft < left + cardWidth) {
+                       if(mouseTop > top && mouseTop < top + cardHeight) {
+                             e.preventDefault()
+                            card.hClick();  
+                       }
+                       
+                   }
+                }
         }
     },
-    mounted:function() {
+    mounted() {
+
+        window.addEventListener('touchstart', this.checkIfBlockTouched);
+
         this.nextLevel()
            var that = this;
- 
+
 
         State.EE.on(Consts.INIT_NEW_GAME, function() {
             that.userStarted = false;
@@ -109,14 +150,15 @@ export default {
             that.level = 1;
             that.nextLevel();
         })
-    
-        State.EE.on("reveal", function(card) {
+
+        State.EE.on("reveal", card => {
                if(!that.userStarted) {
                    that.userStarted = true;
                        document.body.style.backgroundColor = "black"
-                   State.EE.emit("hideAll") 
+                   State.EE.emit("hideAll")
                }
                if(card.gold) {
+                   this.$refs.effects.displayFoundGold( card );
                 that.found ++;
                     if(that.found === that.level) {
                         State.EE.emit(Consts.LEVEL_COMPLETE);
@@ -128,7 +170,7 @@ export default {
                     }
                } else {
                         State.vuex.commit("setGameState", Consts.GAMESTATE_OVER);
-                
+
                         document.body.style.backgroundColor = "red"
                         that.userStarted = false;
                         State.EE.emit("revealAll")
