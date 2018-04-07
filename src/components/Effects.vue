@@ -39,7 +39,7 @@ class MakePaticle1 {
             
 
                 el.style.position = 'absolute'
-                el.src = "/assets/img/SVG/gold.svg"
+                el.src = "assets/img/SVG/gold.svg"
                 el.style.width = "40px"
                 el.style.height = "40px"
                 el.style.left = x + 'px'
