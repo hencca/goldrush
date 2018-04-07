@@ -139,6 +139,7 @@ export default {
     mounted() {
 
         window.addEventListener('touchstart', this.checkIfBlockTouched);
+        window.addEventListener('mousedown', this.checkIfBlockTouched);
 
         this.nextLevel()
            var that = this;
