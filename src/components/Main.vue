@@ -71,27 +71,26 @@ export default {
     },
 
     methods: {
-
         hideall() {
             State.EE.emit("hideAll")
         },
 
         addGoldToCards() {
-              var ar = _.range(0,19)
-            ar.forEach(e=> {
+            var ar = _.range(0,19)
+            ar.forEach( e => {
                  this.$refs["card"+ e].gold = false;
             })
 
             for(var i = 0 ; i < this.level; i++) {
             var r = ar.splice(Math.floor(Math.random()*ar.length-1),1)
-            this.$refs["card"+ r].gold = true;
+            this.$refs["card"+ r].init(true);
             }
         },
 
         nextLevel() {
             var that = this;
             State.vuex.commit("increment");
-
+            document.body.style.backgroundColor = "black"
             this.level = this.llevel;
 
                // .sort((a,b)=>Math.random()>.5 ? -1 :1)
@@ -104,11 +103,7 @@ export default {
              State.EE.emit("revealAll")
              setTimeout(function() {
                 if(!that.userStarted) {
-
                      State.EE.emit("hideAll")
-                     document.body.style.backgroundColor = "black"
-
-
                 }
 
              },2000)
@@ -155,7 +150,7 @@ export default {
         State.EE.on("reveal", card => {
                if(!that.userStarted) {
                    that.userStarted = true;
-                       document.body.style.backgroundColor = "black"
+                  document.body.style.backgroundColor = "black"
                    State.EE.emit("hideAll")
                }
                if(card.gold) {
@@ -164,6 +159,7 @@ export default {
                     if(that.found === that.level) {
                         State.EE.emit(Consts.LEVEL_COMPLETE);
                         State.EE.emit("revealAll")
+                         this.$refs.effects.celebrate();
                        // that.startNewGame();
                        setTimeout(function() {
                            that.nextLevel()

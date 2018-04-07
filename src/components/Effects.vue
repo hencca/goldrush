@@ -8,12 +8,23 @@
 
 class MakePaticle1 { 
          
-         moveme(delta) {
-            
-             
-            this.el.style.top = (this.el.offsetTop + this.yMotion) + "px"
-            this.el.style.left = (this.el.offsetLeft + this.xMotion) + "px"
-            this.yMotion++
+         moveme(time) {
+         
+         if(!this.lasttime) {
+             this.lasttime = time;
+         }
+
+        let delta = (time - this.lasttime) / 1000;
+       
+
+        this.lasttime = time;
+
+            let stepY = (this.el.offsetTop + this.yMotion) * delta
+            let stepX = (this.el.offsetLeft + this.xMotion) * delta
+
+            this.el.style.top = (this.el.offsetTop +stepY) + "px"
+           this.el.style.left = (this.el.offsetLeft + stepX) + "px"
+            this.yMotion+=60
 
             if(this.el.offsetTop < 1000) {
                 window.requestAnimationFrame(delta => this.moveme(delta))
@@ -21,19 +32,18 @@ class MakePaticle1 {
          }
          
          constructor(x , y) {
-             this.el = document.createElement("div");
+             this.el = document.createElement("img");
              let el = this.el;
-             this.yMotion = -10;
-             this.xMotion = -10 + Math.random()*20
+             this.yMotion = -400 - Math.random()*600;
+             this.xMotion = -300 + Math.random()*600
             
 
                 el.style.position = 'absolute'
-                el.className = "goldparticle"
+                el.src = "/assets/img/SVG/gold.svg"
                 el.style.width = "40px"
                 el.style.height = "40px"
                 el.style.left = x + 'px'
                 el.style.top = y + 'px'
-                el.style.backgroundColor = "yellow";
 
                 window.requestAnimationFrame(delta => this.moveme(delta))
 
@@ -49,7 +59,13 @@ export default {
             let particle = new MakePaticle1(card.$el.offsetLeft, card.$el.offsetTop)
             this.$el.appendChild( particle );
             }
+        },
 
+        celebrate() {
+            for(let i = 0; i< 7; i++) {
+            let particle = new MakePaticle1(Math.random()*window.innerWidth, 0)
+            this.$el.appendChild( particle );
+            }
         }
     }
 
@@ -68,15 +84,4 @@ export default {
 
     }
 
-    .particle {
-        width: 100px;
-        height: 100px;
-        background: yellow
-    }
-
-    .goldparticle {
-        width: 40px;
-        height: 40px;
-        border-radius:20px;
-    }
 </style>

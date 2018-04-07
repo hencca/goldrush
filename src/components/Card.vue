@@ -1,10 +1,10 @@
 <template>
   <div ref="ww" v-bind:style="gt" class="wrapper">
-    <div class="lid" v-if="!open"></div>
+  <div ref="wrapper2">
      <div v-bind:class="'container ' +( gold ? 'gold': 'empty1')" v-if="open">
-         <img style="width:100%" v-if="gold" src="assets/img/gold.gif">
-
+            <img ref="gold" class="card_gold" v-if="gold" src="assets/img/SVG/gold.svg">
      </div>
+  </div>
   </div>
 </template>
 
@@ -23,10 +23,35 @@ export default {
 
 
 methods: {
- 
+
+
+    init(gold) {
+        this.$refs.wrapper2.style.display = 'none'
+        this.gold = gold
+    },
+
+    animateIn() {
+
+        if(this.gold ) {
+
+            //this.$refs.gold.style.display ='none'
+            setTimeout(()=> {
+                this.$refs.gold.style.display ='block'
+                this.$refs.wrapper2.style.display = 'block'
+                        TweenMax.to(this.$refs.gold, 0, {width:"8%", height:"8%"});
+                        TweenMax.to(this.$refs.gold, 1, {width:"80%", height:"80%", ease:Elastic.easeOut});
+                    },10 + Math.random()*1000)
+        }
+      
+    },
+
     startGame() {
         this.firstClicked = false;
+
+        console.log(this.$refs)
+
         //this.gold = Math.random() < .3 ? true : false;
+        this.animateIn();
     },
 
     resize:function() {
@@ -55,6 +80,7 @@ computed: {
     mounted() {
         var that = this;
         window.addEventListener("resize",this.resize )
+       
         //this.resize();
 
         setTimeout(function() {
@@ -70,6 +96,10 @@ computed: {
         State.EE.on("hideAll", function() {
                 that.open = false;
           });
+    },
+
+    created() {
+        this.$refs.gold.style.display ='none'
     }
 
 }
@@ -79,38 +109,19 @@ computed: {
 
 <style scoped>
 .wrapper {
-border-left: 4px solid #ce4141;
-flex: 1;
-position: relative;
-border-top: 2px solid #dd4848;
-border-bottom: 3px solid;
-border-right: 4px solid;
-box-sizing: border-box;
+
+    flex: 1;
+    position: relative;
+    box-sizing: border-box;
+    background-color: teal;
+    margin: 1px ;
 
 }
-.lid {
-    background-color:#776600;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
-
-.container.gold {
-    height: 100%;
-    width: 100%;
-}
 
 
 
-.container.gold img {
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: crisp-edges;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
+
+
 
 .lid.empty1 {
     background-color: gray;
