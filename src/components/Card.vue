@@ -36,11 +36,11 @@ methods: {
 
             //this.$refs.gold.style.display ='none'
             setTimeout(()=> {
-                this.$refs.gold.style.display ='block'
+                //this.$refs.gold.style.display ='block'
                 this.$refs.wrapper2.style.display = 'block'
                         TweenMax.to(this.$refs.gold, 0, {width:"8%", height:"8%"});
                         TweenMax.to(this.$refs.gold, 1, {width:"80%", height:"80%", ease:Elastic.easeOut});
-                    },10 + Math.random()*1000)
+                    },10 + Math.random()*500)
         }
       
     },
@@ -98,9 +98,7 @@ computed: {
           });
     },
 
-    created() {
-        this.$refs.gold.style.display ='none'
-    }
+
 
 }
 

@@ -31,23 +31,16 @@ export default {
     render:function(h) {
        let ret = []
        for(var i = 0; i < 4; i++) {
-        ret.push (
-            getRow( h, i )
-        )
+        ret.push ( getRow( h, i ))
        }
-
-
-
        return (
        <div>
        {
            showEffects(h)
        }
         <h2 class="score">Level: {this.level}</h2>
-       <div class="container">
-      
-       {ret}
-       </div>
+        <div class="container">{ret}</div>
+        <p style="font-size:28px">{this.found} / {this.level}</p>
        </div>);
     },
    components: {
@@ -56,13 +49,12 @@ export default {
    },
 
    data: function() {
-   return {
-       level:State.vuex.state.level,
-       found:0,
-       userStarted:false,
-   }
-
-   },
+        return {
+            level:State.vuex.state.level,
+            found:0,
+            userStarted:false,
+        }
+    },
 
     computed:{
         llevel() {
@@ -180,18 +172,4 @@ export default {
 }
 </script>
 
- <style scoped>
-
-.container {
-    margin: auto;
-    max-width: 700px;
-    background-color:brown;
-}
-
-.row {
-    display: flex;
-}
-
-
-</style>
 
